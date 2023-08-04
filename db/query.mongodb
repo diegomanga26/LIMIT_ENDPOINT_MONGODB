@@ -1,0 +1,69 @@
+use("db_limit_mongo");
+db.createCollection("usuario", {
+    capped: true,
+    size: 690,
+    max: 5,
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            additionalProperties: false,
+            required: ['_id','nombre', 'apellido','edad'],
+            properties: {
+                _id: {
+                    bsonType: 'objectId',
+                    description: 'El parametro _id es obligatorio'
+                },
+                nombre: {
+                    bsonType: 'string',
+                    description: 'El parametro nombre es obligatorio'
+                },
+                apellido: {
+                    bsonType: 'string',
+                    description: 'El parametro apellido es obligatorio'
+                },
+                edad: {
+                    bsonType: 'number',
+                    description: 'El parametro edad es obligatorio'
+                }
+            },
+            allOf: [
+                {
+                    properties: {
+                        email: {
+                            bsonType: 'string',
+                            description: 'El parametro email es obligatorio'
+                        }
+                    }
+                }
+            ],
+        },
+    }
+});
+use("db_limit_mongo");
+db.usuario.insertMany([
+    {
+        "nombre": "Diego",
+        "apellido": "Manga",
+        "edad": 24
+    },
+    {
+        "nombre": "Jose",
+        "apellido": "Ramirez",
+        "edad": 19
+    },
+    {
+        "nombre": "Ivan",
+        "apellido": "Garces",
+        "edad": 23
+    },
+    {
+        "nombre": "Diego",
+        "apellido": "Martinez",
+        "edad": 28
+    },
+    {
+        "nombre": "Adrian",
+        "apellido": "Bueno",
+        "edad": 18
+    },
+]);
